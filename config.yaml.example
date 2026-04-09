@@ -1,0 +1,81 @@
+agent:
+  name: "KaliGuard AI"
+  version: "1.0.0"
+  description: "Defensive cybersecurity AI agent for authorized penetration testing"
+
+security:
+  allowed_networks:
+    - "192.168.0.0/16"
+    - "10.0.0.0/8"
+    - "172.16.0.0/12"
+  dry_run: false
+  confirm_before_action: true
+  require_authorization_acknowledgment: true
+
+logging:
+  log_level: INFO
+  log_file: "logs/kaliguard.log"
+  log_rotation: "10 MB"
+  log_backup_count: 5
+
+database:
+  devices_db: "database/devices.db"
+  vulnerabilities_db: "database/vulnerabilities.db"
+  sessions_db: "database/sessions.db"
+
+reports:
+  output_dir: "reports/"
+  default_format: "pdf"
+  include_executive_summary: true
+  include_technical_details: true
+  include_remediation: true
+
+ai:
+  # Set ANTHROPIC_API_KEY environment variable instead of putting key here
+  model: "claude-opus-4-6"
+  max_tokens: 4096
+  temperature: 0.2
+  system_prompt_extra: ""
+
+tools:
+  nmap:
+    default_ports: "1-1000"
+    default_scan_type: "SYN"
+    timeout: 300
+  gobuster:
+    default_wordlist: "/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"
+    timeout: 600
+  hashcat:
+    default_wordlist: "/usr/share/wordlists/rockyou.txt"
+    timeout: 3600
+  hydra:
+    default_wordlist: "/usr/share/wordlists/rockyou.txt"
+    timeout: 600
+  tcpdump:
+    default_interface: "eth0"
+    default_duration: 60
+  nikto:
+    timeout: 300
+
+wordlists:
+  rockyou: "/usr/share/wordlists/rockyou.txt"
+  dirbuster_medium: "/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"
+  dirbuster_small: "/usr/share/wordlists/dirbuster/directory-list-2.3-small.txt"
+  seclist_common: "/usr/share/seclists/Discovery/Web-Content/common.txt"
+
+workflows:
+  quick_recon:
+    - nmap_scan
+    - whois_lookup
+    - dns_enum
+  full_audit:
+    - nmap_scan
+    - nikto_scan
+    - openvas_scan
+    - gobuster_scan
+    - searchsploit_search
+  forensic_analysis:
+    - volatility_analyze
+    - yara_scan
+    - chkrootkit_scan
+    - rkhunter_scan

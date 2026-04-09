@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+*.env
+config.yaml
+!config.yaml.example
+*.db
+*.sqlite
+reports/
+logs/
+wordlists/
+*.log
+.DS_Store
+*.pyc
+venv/
+.venv/
